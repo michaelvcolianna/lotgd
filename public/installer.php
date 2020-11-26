@@ -3,7 +3,7 @@
 //translator ready
 //addnews ready
 //mail ready
-
+require_once '../bootstrap.php';
 define("ALLOW_ANONYMOUS",true);
 define("OVERRIDE_FORCED_NAV",true);
 define("IS_INSTALLER",true);

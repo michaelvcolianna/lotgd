@@ -113,15 +113,19 @@ if (file_exists("dbconnect.php")){
 	}
 }
 
-// If you are running a server that has high overhead to *connect* to your
-// database (such as a high latency network connection to mysql),
-// reversing the commenting of the following two code lines may significantly
-// increase your overall performance.  Pconnect uses more server resources though.
-// For more details, see
-// http://php.net/manual/en/features.persistent-connections.php
-//
-//$link = db_pconnect($DB_HOST, $DB_USER, $DB_PASS);
-$link = db_connect($DB_HOST, $DB_USER, $DB_PASS);
+$link = false;
+if(!defined('DB_NODB'))
+{
+    // If you are running a server that has high overhead to *connect* to your
+    // database (such as a high latency network connection to mysql),
+    // reversing the commenting of the following two code lines may significantly
+    // increase your overall performance.  Pconnect uses more server resources though.
+    // For more details, see
+    // http://php.net/manual/en/features.persistent-connections.php
+    //
+    //$link = db_pconnect($DB_HOST, $DB_USER, $DB_PASS);
+    $link = db_connect($DB_HOST, $DB_USER, $DB_PASS);
+}
 
 $out = ob_get_contents();
 ob_end_clean();

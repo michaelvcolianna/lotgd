@@ -12,11 +12,9 @@ $game=0;
 $missing=0;
 $conflict = array();
 
-$link = mysql_connect($session['dbinfo']['DB_HOST'],$session['dbinfo']['DB_USER'],$session['dbinfo']['DB_PASS']);
-mysql_select_db($session['dbinfo']['DB_NAME']);
 $sql = "SHOW TABLES";
-$result = mysql_query($sql);
-while ($row = mysql_fetch_assoc($result)){
+$result = db_query($sql);
+while ($row = db_fetch_assoc($result)){
 	list($key,$val)=each($row);
 	if (isset($descriptors[$val])){
 		$game++;
@@ -54,19 +52,5 @@ $session['dbinfo']['upgrade']=$upgrade;
 			output("`nIf you are sure that you wish to overwrite these tables, <a href='installer.php?stage=5&op=confirm_overwrite'>click here</a>.`n",true);
 		}
 	}
-	output("`nYou can avoid table conflicts with other applications in the same database by providing a table name prefix.");
-	output("This prefix will get put on the name of every table in the database.");
 }
-rawoutput("<form action='installer.php?stage=5' method='POST'>");
-output("`nTo provide a table prefix, enter it here.");
-output("If you don't know what this means, you should either leave it blank, or enter an intuitive value such as \"logd\".`n");
-rawoutput("<input name='DB_PREFIX' value=\"".htmlentities($session['dbinfo']['DB_PREFIX'], ENT_COMPAT, getsetting("charset", "ISO-8859-1"))."\"><br>");
-$submit = translate_inline("Submit your prefix.");
-rawoutput("<input type='submit' value='$submit' class='button'>");
-rawoutput("</form>");
-if (count($conflict)==0){
-	output("`^It looks like you can probably safely skip this step if you don't know what it means.");
-}
-output("`n`n`@Once you have submitted your prefix, you will be returned to this page to select the next step.");
-output("If you don't need a prefix, just select the next step now.");
 ?>

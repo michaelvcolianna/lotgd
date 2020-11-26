@@ -13,7 +13,7 @@ require_once("lib/datacache.php");
  * - mysqli_proc:		The MySQLi extension of PHP5, procedural style
  *
  */
-define('DBTYPE',"mysql");
+define('DBTYPE', $_ENV['DB_TYPE'] ?? 'mysqli_oos');
 
 $dbinfo = array();
 $dbinfo['queriesthishit']=0;
