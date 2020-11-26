@@ -14,7 +14,8 @@ function dag_install_private(){
 	$result = db_query($sql);
 	$bountytableisthere=false;
 	while ($row = db_fetch_assoc($result)){
-		list($key,$val)=each($row);
+        $val = current($row);
+        next($row);
 		if ($val==db_prefix("bounty")){
 			$bountytableisthere=true;
 			break;

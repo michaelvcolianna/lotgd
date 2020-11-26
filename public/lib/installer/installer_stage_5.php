@@ -15,7 +15,8 @@ $conflict = array();
 $sql = "SHOW TABLES";
 $result = db_query($sql);
 while ($row = db_fetch_assoc($result)){
-	list($key,$val)=each($row);
+    $val = current($row);
+    next($row);
 	if (isset($descriptors[$val])){
 		$game++;
 		array_push($conflict,$val);

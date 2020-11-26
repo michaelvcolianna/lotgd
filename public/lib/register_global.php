@@ -9,8 +9,8 @@
 // deal with.  Yes, we could find all references to this stuff and get rid
 // of the dependancy, but it's not really worth it.
 function register_global(&$var){
-	@reset($var);
-	while (list($key,$val)=@each($var)){
+    @reset($var);
+    foreach($var as $key => $val){
 		global $$key;
 		$$key = $val;
 	}

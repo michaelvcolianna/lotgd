@@ -7,8 +7,8 @@ function dump_item($item){
 	if (is_array($item)) $temp = $item;
 	else $temp = @unserialize($item);
 	if (is_array($temp)) {
-		$out .= "array(" . count($temp) . ") {<div style='padding-left: 20pt;'>";
-		while(list($key, $val) = @each($temp)) {
+        $out .= "array(" . count($temp) . ") {<div style='padding-left: 20pt;'>";
+        foreach($temp as $key => $val) {
 			$out .= "'$key' = '" . dump_item($val) . "'`n";
 		}
 		$out .= "</div>}";
@@ -24,8 +24,8 @@ function dump_item_ascode($item,$indent="\t"){
 	else $temp = @unserialize($item);
 	if (is_array($temp)) {
 		$out .= "array(\n$indent";
-		$row = array();
-		while(list($key, $val) = @each($temp)) {
+        $row = array();
+        foreach($temp as $key => $val) {
 			array_push($row,"'$key'=&gt;" . dump_item_ascode($val,$indent."\t"));
 		}
 		if (strlen(join(", ",$row)) > 80){

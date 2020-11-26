@@ -152,7 +152,7 @@ if ($op=="suicide" && getsetting("selfdelete",0)!=0) {
 		"email"=>"Email Address",
 		"Display Preferences,title",
 		"template"=>"Skin,theme",
-		"language"=>"Language,enum,".getsetting("serverlanguages","en,English,de,Deutsch,fr,Français,dk,Danish,es,Español,it,Italian"),
+		"language"=>"Language,enum,".getsetting("serverlanguages","en,English,de,Deutsch,fr,Franï¿½ais,dk,Danish,es,Espaï¿½ol,it,Italian"),
 		"tabconfig"=>"Show config sections in tabs,bool",
 		"Game Behavior Preferences,title",
 		"emailonmail"=>"Send email when you get new Ye Olde Mail?,bool",
@@ -219,7 +219,7 @@ if ($op=="suicide" && getsetting("selfdelete",0)!=0) {
 		$tempsettings = array();
 		$tempdata = array();
 		$found = 0;
-		while (list($key, $val) = each($info['prefs'])) {
+		foreach($info['prefs'] as $key => $val) {
 			$isuser = preg_match("/^user_/", $key);
 			$ischeck = preg_match("/^check_/", $key);
 
@@ -231,7 +231,7 @@ if ($op=="suicide" && getsetting("selfdelete",0)!=0) {
 			} else {
 				$x = explode("|", $val);
 			}
-			
+
 			if(is_array($x[0])) $x[0] = call_user_func_array('sprintf', $x[0]);
 			//$type = split(",", $x[0]);
 			$type = explode(",", $x[0]);
@@ -294,7 +294,7 @@ if ($op=="suicide" && getsetting("selfdelete",0)!=0) {
 		}
 	}
 	addnav('View Bio','bio.php?char='.$session['user']['acctid'].'&ret='.urlencode($_SERVER['REQUEST_URI']));
-	
+
 	$form = array_merge($form, $msettings);
 	$prefs = array_merge($prefs, $mdata);
 	rawoutput("<form action='prefs.php?op=save' method='POST' onSubmit='return(md5pass)'>");

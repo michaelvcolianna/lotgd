@@ -48,11 +48,11 @@ function check_temp_stat($name,$color=false){
 function suspend_temp_stats(){
 	global $session, $temp_user_stats;
 	if (!$temp_user_stats['is_suspended']){
-		reset($temp_user_stats);
-		while (list($type,$collection)=each($temp_user_stats)){
+        reset($temp_user_stats);
+        foreach($temp_user_stats as $type => $collection){
 			if ($type=='add'){
-				reset($collection);
-				while (list($attribute,$value)=each($collection)){
+                reset($collection);
+                foreach($collection as $attribute => $value){
 					$session['user'][$attribute] -= $value;
 				}
 			}
@@ -67,11 +67,11 @@ function suspend_temp_stats(){
 function restore_temp_stats(){
 	global $session, $temp_user_stats;
 	if ($temp_user_stats['is_suspended']){
-		reset($temp_user_stats);
-		while (list($type,$collection)=each($temp_user_stats)){
+        reset($temp_user_stats);
+        foreach($temp_user_stats as $type => $collection){
 			if ($type=='add'){
-				reset($collection);
-				while (list($attribute,$value)=each($collection)){
+                reset($collection);
+                foreach($collection as $attribute => $value){
 					$session['user'][$attribute] += $value;
 				}
 			}

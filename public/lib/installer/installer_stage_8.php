@@ -58,8 +58,8 @@ if (return_bytes($phpram) < 12582912 && $phpram!=-1 && !$session['overridememory
 				"download"=>"",
 				"description"=>"",
 				"invalid"=>true,
-			);
-	while (list($key,$modulename) = each($uninstalled)){
+            );
+    foreach($uninstalled as $key => $modulename){
 		$row = array();
 		//test if the file is a valid module or a lib file/whatever that got in, maybe even malcode that does not have module form
 		$modulenamelower = strtolower($modulename);
@@ -102,20 +102,20 @@ if (return_bytes($phpram) < 12582912 && $phpram!=-1 && !$session['overridememory
 	rawoutput("<table cellpadding='1' cellspacing='1'>");
 	ksort($all_modules);
 	reset($all_modules);
-	$x=0;
-	while (list($categoryName,$categoryItems)=each($all_modules)){
+    $x=0;
+    foreach($all_modules as $categoryName => $categoryItems){
 		rawoutput("<tr class='trhead'><td colspan='6'>".tl($categoryName)."</td></tr>");
 		rawoutput("<tr class='trhead'><td>".tl("Uninstalled")."</td><td>".tl("Installed")."</td><td>".tl("Activated")."</td><td>".tl("Recommended")."</td><td>".tl("Module Name")."</td><td>".tl("Author")."</td></tr>");
-		reset($categoryItems);
-		while (list($modulename,$moduleinfo)=each($categoryItems)){
+        reset($categoryItems);
+        foreach($categoryItems as $modulename => $moduleinfo){
 			$x++;
 			//if we specified things in a previous hit on this page, let's update the modules array here as we go along.
 			$moduleinfo['realactive'] = $moduleinfo['active'];
 			$moduleinfo['realinstalled'] = $moduleinfo['installed'];
 			if (array_key_exists('moduleoperations',$session) && is_array($session['moduleoperations']) && array_key_exists($modulename,$session['moduleoperations'])){
 				$ops = explode(",",$session['moduleoperations'][$modulename]);
-				reset($ops);
-				while (list($trash,$op) = each($ops)){
+                reset($ops);
+                foreach($ops as $trash => $op){
 					switch($op){
 						case "uninstall":
 						$moduleinfo['installed'] = false;
@@ -192,7 +192,7 @@ if (return_bytes($phpram) < 12582912 && $phpram!=-1 && !$session['overridememory
 			rawoutput("</td>");
 			rawoutput("</tr>");
 		}
-	}
+    }
 	rawoutput("</table>");
 	rawoutput("<br><input type='submit' value='$submit' class='button'>");
 	rawoutput("<input type='button' onClick='chooseRecommendedModules();' class='button' value='$install' class='button'>");
@@ -204,7 +204,7 @@ function chooseRecommendedModules(){
 	var selectedCount = 0;
 ");
 	reset($recommended_modules);
-	while (list($key,$val)=each($recommended_modules)){
+	foreach($recommended_modules as $key => $val){
 		rawoutput("thisItem = document.getElementById('activate-$val'); ");
 		rawoutput("if (!thisItem.checked) { selectedCount++; thisItem.checked=true; }\n");
 	}

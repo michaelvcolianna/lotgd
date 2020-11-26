@@ -230,7 +230,7 @@ function module_check_requirements($reqs, $forceinject=false){
 
 	// Check the requirements.
 	reset($reqs);
-	while (list($key,$val)=each($reqs)){
+	foreach($reqs as $key => $val){
 		$info = explode("|",$val);
 		if (!is_module_installed($key,$info[0])) {
 			return false;
@@ -421,7 +421,7 @@ function modulehook($hookname, $args=false, $allowinactive=false, $only=false){
 			rawoutput("  arg: $arg");
 		} else {
 			reset($args);
-			while (list($key,$val)=each($args)){
+			foreach($args as $key => $val){
 				$arg = $key." = ";
 				if (is_array($val)){
 					$arg.="array(".count($val).")";
@@ -1209,7 +1209,7 @@ function module_objpref_edit($type, $module, $id)
 	if (count($info['prefs-'.$type]) > 0) {
 		$data = array();
 		$msettings = array();
-		while(list($key, $val) = each($info['prefs-'.$type])) {
+		foreach($info['prefs-'.$type] as $key => $val) {
 			if (is_array($val)) {
 				$v = $val[0];
 				$x = explode("|", $v);
@@ -1452,7 +1452,7 @@ function module_delete_oldvalues($table,$key) {
     gamelog("Cleaned up $total old values in $table that don't exist anymore", 'maintenance');
 }
 
-function module_pref_filter($a){ 
+function module_pref_filter($a){
     return !is_numeric($a);
 }
 

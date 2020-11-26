@@ -9,8 +9,8 @@ function templatereplace($itemname,$vals=false){
 		output("`bWarning:`b The `i%s`i template part was not found!`n", $itemname);
 	$out = $template[$itemname];
 	if (!is_array($vals)) return $out;
-	@reset($vals);
-	while (list($key,$val)=@each($vals)){
+    @reset($vals);
+    foreach($vals as $key => $val){
 		if (strpos($out,"{".$key."}")===false){
 			output("`bWarning:`b the `i%s`i piece was not found in the `i%s`i te".
 					"mplate part! (%s)`n", $key, $itemname, $out);
@@ -49,14 +49,14 @@ function prepare_template($force=false){
 
 		//tags that must appear in the header
 		$templatetags=array("title","headscript","script");
-		while (list($key,$val)=each($templatetags)){
+		foreach($templatetags as $key => $val){
 			if (strpos($template['header'],"{".$val."}")===false && $val)
 				$templatemessage .=
 					"You do not have {".$val."} defined in your header\n";
 		}
 		//tags that must appear in the footer
 		$templatetags=array();
-		while (list($key,$val)=each($templatetags)){
+		foreach($templatetags as $key => $val){
 			if (strpos($template['footer'],"{".$val."}")===false && $val)
 				$templatemessage .=
 					"You do not have {".$val."} defined in your footer\n";
@@ -65,7 +65,7 @@ function prepare_template($force=false){
 		//tags that may appear anywhere but must appear
 		$templatetags=array("nav","stats","petition","motd","mail",
 				"paypal","source","version", "copyright");
-		while (list($key,$val)=each($templatetags)){
+		foreach($templatetags as $key => $val){
 			if (!$key) array_push($templatetags,$y2^$z2);
 			if (strpos($template['header'],"{".$val."}")===false &&
 					strpos($template['footer'],"{".$val."}")===false && $val)

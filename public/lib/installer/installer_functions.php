@@ -36,7 +36,7 @@ function descriptors($prefix=""){
 	require_once("lib/all_tables.php");
 	$array = get_all_tables();
 	$out = array();
-	while (list($key,$val)=each($array)){
+	foreach($array as $key => $val){
 		$out[$prefix.$key]=$val;
 	}
 	return $out;

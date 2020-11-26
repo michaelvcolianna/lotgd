@@ -36,7 +36,7 @@ function spell($input,$words=false,$prefix="<span style='border: 1px dotted #FF0
 		$input = preg_split("/([<>])/",$input,-1,PREG_SPLIT_DELIM_CAPTURE);
 		$intag = false;
 		$output = "";
-		while (list($key,$val)=each($input)){
+		foreach($input as $key => $val){
 			if ($val=="<"){
 				$intag = true;
 			}elseif ($val==">"){
@@ -47,7 +47,7 @@ function spell($input,$words=false,$prefix="<span style='border: 1px dotted #FF0
 					preg_split("/([\t\n\r[:space:]-])/",
 						$val,-1,PREG_SPLIT_DELIM_CAPTURE);
 				$val = "";
-				while (list($k,$v)=each($line)){
+				foreach($line as $k => $v){
 					$lookups = array();
 					$i=0;
 					//look for common variations on words
@@ -59,8 +59,8 @@ function spell($input,$words=false,$prefix="<span style='border: 1px dotted #FF0
 					//search for contraction endings
 					reset($contractions);
 					//strip trailing punctuation
-					$v2 = preg_replace("/[.?!\"']+$/","",$v);
-					while (list($cont,$throwaway)=each($contractions)){
+                    $v2 = preg_replace("/[.?!\"']+$/","",$v);
+                    foreach($contractions as $cont => $throwaway){
 						if (substr($v2,strlen($v2)-strlen($cont)) == $cont){
 							$v1 = substr($v2,0,strlen($v2)-strlen($cont));
 							if ($v1>"") {
@@ -78,8 +78,8 @@ function spell($input,$words=false,$prefix="<span style='border: 1px dotted #FF0
 						$lookups = array();
 					}
 					if (count($lookups)>0){
-						$found = false;
-						while (list($k1,$v1)=each($lookups)){
+                        $found = false;
+                        foreach($lookups as $k1 => $v1){
 							if (isset($dict[$k1])){
 								$found = true;
 								break;
