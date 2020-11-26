@@ -2,7 +2,6 @@
 // translator ready
 // addnews ready
 // mail ready
-require_once '../bootstrap.php';
 if (isset($_POST['template'])){
 	$skin = $_POST['template'];
 	if ($skin > "") {

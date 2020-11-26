@@ -9,6 +9,7 @@
 // 	error_reporting (E_ALL ^ E_NOTICE);
 // }
 #error_reporting (E_ALL);
+error_reporting(E_ALL & ~E_NOTICE);
 
 // function set_magic_quotes(&$vars) {
 // 	if (is_array($vars)) {
