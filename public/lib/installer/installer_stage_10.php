@@ -9,7 +9,7 @@ if (db_num_rows($result)==0){
 		if (httppost("pass1")!=httppost("pass2")){
 			output("`\$Oops, your passwords don't match.`2`n");
 			$showform=true;
-		}elseif (strlen(httppost("pass1"))<6){
+		}elseif (strlen(httppost("pass1"))<8){
 			output("`\$Whoa, that's a short password, you really should make it longer.`2`n");
 			$showform=true;
 		}else{
@@ -24,7 +24,7 @@ if (db_num_rows($result)==0){
 			SU_MANAGE_MODULES | SU_AUDIT_MODERATION | SU_RAW_SQL |
 			SU_VIEW_SOURCE | SU_NEVER_EXPIRE;
 			$name = httppost("name");
-			$pass = md5(md5(stripslashes(httppost("pass1"))));
+            $pass = password_hash(httppost("pass1"), PASSWORD_BCRYPT, ['cost' => $_ENV['APP_BCRYPT'] ?? 10]);
 			$sql = "DELETE FROM ".db_prefix("accounts")." WHERE login='$name'";
 			db_query($sql);
 			$sql = "INSERT INTO " .db_prefix("accounts") ." (login,password,superuser,name,ctitle,regdate) VALUES('$name','$pass',$su,'`%Admin `&$name`0','`%Admin', NOW())";
