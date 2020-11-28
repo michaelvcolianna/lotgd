@@ -19,24 +19,20 @@ if ($name!=""){
 	if ($session['loggedin']){
 		redirect("badnav.php");
 	}else{
+        $account = false;
 		$password = httppost('password');
-		$password = stripslashes($password);
-		if (substr($password, 0, 5) == "!md5!") {
-			$password = md5(substr($password, 5));
-		} elseif (substr($password, 0, 6) == "!md52!") {// && strlen($password) == 38) {
-			$force = httppost('force');
-			if ($force) {
-				$password = addslashes(substr($password, 6));
-			} else {
-				$password='no hax0rs for j00!';
-			}
-		} else {
-			$password = md5(md5($password));
-		}
-		$sql = "SELECT * FROM " . db_prefix("accounts") . " WHERE login = '$name' AND password='$password' AND locked=0";
-		$result = db_query($sql);
-		if (db_num_rows($result)==1){
-			$session['user']=db_fetch_assoc($result);
+        $sql = "SELECT * FROM " . db_prefix("accounts") . " WHERE login = '$name' AND locked=0";
+        $result = db_query($sql);
+        if(db_num_rows($result) == 1)
+        {
+            $account_data = db_fetch_assoc($result);
+            if(password_verify($password, $account_data['password']))
+            {
+                $account = $account_data;
+            }
+        }
+		if ($account){
+			$session['user']=$account;
 			$companions = @unserialize($session['user']['companions']);
 			if (!is_array($companions)) $companions = array();
 			$baseaccount = $session['user'];
