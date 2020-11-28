@@ -26,10 +26,7 @@ if ($op=="val"){
 		$sql = "UPDATE " . db_prefix("accounts") . " SET emailvalidation='' WHERE emailvalidation='$id';";
 		db_query($sql);
 		output("`#`cYour email has been validated.  You may now log in.`c`0");
-		rawoutput("<form action='login.php' method='POST'>");
-		rawoutput("<input name='name' value=\"{$row['login']}\" type='hidden'>");
-		rawoutput("<input name='password' value=\"!md52!{$row['password']}\" type='hidden'>");
-		rawoutput("<input name='force' value='1' type='hidden'>");
+		rawoutput("<form action='home.php' method='POST'>");
 		output("Your email has been validated, your login name is `^%s`0.`n`n",
 				$row['login']);
 		$click = translate_inline("Click here to log in");
@@ -125,13 +122,8 @@ if (getsetting("allowcreation",1)==0){
 				}
 			}
 
-			$passlen = (int)httppost("passlen");
-			if (substr($pass1, 0, 5) != "!md5!" &&
-					substr($pass1, 0, 6) != "!md52!") {
-				$passlen = strlen($pass1);
-			}
-			if ($passlen<=3){
-					$msg.=translate_inline("Your password must be at least 4 characters long.`n");
+			if (strlen($pass1)<=7){
+					$msg.=translate_inline("Your password must be at least 8 characters long.`n");
 				$blockaccount=true;
 			}
 			if ($pass1!=$pass2){
@@ -183,16 +175,11 @@ if (getsetting("allowcreation",1)==0){
 					}else{
 						$referer=0;
 					}
-					$dbpass = "";
-					if (substr($pass1, 0, 5) == "!md5!") {
-						$dbpass = md5(substr($pass1, 5));
-					} else {
-						$dbpass = md5(md5($pass1));
-					}
+					$dbpass = password_hash($pass1, PASSWORD_BCRYPT, ['cost' => $_ENV['APP_BCRYPT'] ?? 10]);
 					$sql = "INSERT INTO " . db_prefix("accounts") . "
 						(name, superuser, title, password, sex, login, laston, uniqueid, lastip, gold, emailaddress, emailvalidation, referer, regdate)
 						VALUES
-						('$title $shortname', '".getsetting("defaultsuperuser",0)."', '$title', '$dbpass', '$sex', '$shortname', '".date("Y-m-d H:i:s",strtotime("-1 day"))."', '".$_COOKIE['lgi']."', '".$_SERVER['REMOTE_ADDR']."', ".getsetting("newplayerstartgold",50).", '$email', '$emailverification', '$referer', NOW())";
+                        ('$title $shortname', '".getsetting("defaultsuperuser",0)."', '$title', '$dbpass', '$sex', '$shortname', '".date("Y-m-d H:i:s",strtotime("-1 day"))."', '".$_COOKIE['lgi']."', '".$_SERVER['REMOTE_ADDR']."', ".getsetting("newplayerstartgold",50).", '$email', '$emailverification', '$referer', NOW())";
 					db_query($sql);
 					if (db_affected_rows(LINK)<=0){
 						output("`\$Error`^: Your account was not created for an unknown reason, please try again. ");
@@ -248,35 +235,14 @@ if (getsetting("allowcreation",1)==0){
 		$refer=httpget('r');
 		if ($refer) $refer = "&r=".htmlentities($refer, ENT_COMPAT, getsetting("charset", "ISO-8859-1"));
 
-		rawoutput("<script language='JavaScript' src='lib/md5.js'></script>");
-		rawoutput("<script language='JavaScript'>
-		<!--
-		function md5pass(){
-			// encode passwords
-			var plen = document.getElementById('passlen');
-			var pass1 = document.getElementById('pass1');
-			plen.value = pass1.value.length;
-
-			if(pass1.value.substring(0, 5) != '!md5!') {
-				pass1.value = '!md5!'+hex_md5(pass1.value);
-			}
-			var pass2 = document.getElementById('pass2');
-			if(pass2.value.substring(0, 5) != '!md5!') {
-				pass2.value = '!md5!'+hex_md5(pass2.value);
-			}
-
-		}
-		//-->
-		</script>");
-		rawoutput("<form action=\"create.php?op=create$refer\" method='POST' onSubmit=\"md5pass();\">");
+		rawoutput("<form action=\"create.php?op=create$refer\" method='POST'>");
 		// this is the first thing a new player will se, so let's make it look
 		// better
-		rawoutput("<input type='hidden' name='passlen' id='passlen' value='0'>");
 		rawoutput("<table><tr valign='top'><td>");
 		output("How will you be known to this world? ");
-		rawoutput("</td><td><input name='name'></td></tr><tr valign='top'><td>");
+		rawoutput("</td><td><input name='name'> <em>Your name must be between 3 and 25 characters.</em></td></tr><tr valign='top'><td>");
 		output("Enter a password: ");
-		rawoutput("</td><td><input type='password' name='pass1' id='pass1'></td></tr><tr valign='top'><td>");
+		rawoutput("</td><td><input type='password' name='pass1' id='pass1'> <em>You should choose a secure password with letters/numbers/symbols, at least 8 characters in length.</em></td></tr><tr valign='top'><td>");
 		output("Re-enter it for confirmation: ");
 		rawoutput("</td><td><input type='password' name='pass2' id='pass2'></td></tr><tr valign='top'><td>");
 		output("Enter your email address: ");
