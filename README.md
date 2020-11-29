@@ -10,18 +10,15 @@ serve from that `/public` directory.
 The [old readme](#old-readme) is below for archival purposes, and the bare code
 (which _should_ work on shared hosting) is in the `master` branch.
 
-Installation is similar to the the regular code:
+Installation steps:
 
-- Copy `.env.example` to `.env` and fill in your values. The `DB_TYPE` variable
-corresponds to the options in `/public/lib/dbwrapper.php` (note that the 'mysql'
-option won't work in PHP >= 7).
-- Due to dotenv, when the installer reaches the point where it needs the
-database information, it will use the values in the `.env` file.
-- When the installer reaches the point where it writes the
-`/public/dbconnect.php` file, it will simply reference the values in the `$_ENV`
-global.
-- In both this code and the original code, no modules are automatically selected
-for install/activation, so please review that page carefully.
+- Create your database and credentials, if not already done.
+- Import `lotgd.sql` to your database.
+- Copy `.env.example` to `.env` and fill in your values.
+- Visit the site and the installer will start.
+
+No modules are automatically selected for activation, so please review them
+after the installation is complete.
 
 **_This code is in no way secure. Use at your own risk._**
 
