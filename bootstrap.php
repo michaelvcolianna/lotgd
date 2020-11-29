@@ -160,6 +160,11 @@ if(pathinfo($_SERVER['SCRIPT_NAME'])['filename'] != 'new_installer')
         exit();
     }
 }
+else
+{
+    header('Location:/');
+    exit();
+}
 
 // If the script makes it here, all prechecks are done
 $db = null;
