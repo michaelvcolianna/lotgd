@@ -20,6 +20,7 @@ function lotgdsort($a, $b)
 
 	global $logd_version;
 	$official_prefixes = array(
+        "michaelvcolianna/lotgd+feature/improvements",
 		"1.1.2 Dragonprime Edition",
 		"1.1.1 Dragonprime Edition",
 		"1.1.0 Dragonprime Edition",

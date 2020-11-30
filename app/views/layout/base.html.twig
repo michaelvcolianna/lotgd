@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>LotGD | {% block title %}Page Title{% endblock %}</title>
+        <style>/* non-blocking styles here */</style>
+        <link rel="stylesheet" href="/css/main.css">
+    </head>
+
+    <body>
+        <header>
+            <!-- @todo Skip to content link -->
+
+            <div id="branding">
+                <strong>Legend of the Green Dragon</strong>
+            </div>
+
+            <nav aria-label="Public">
+                <ul>
+                    <li>
+                        <a href="#">About LoGD</a>
+                    </li>
+
+                    <li>
+                        <a href="#">Daily news</a>
+                    </li>
+
+                    <li>
+                        <a href="#">Game setup info</a>
+                    </li>
+
+                    <li>
+                        <a href="#">LoGD network</a>
+                    </li>
+
+                    <li>
+                        <a href="#">MoTD</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <h1>
+                {% block header %}Page header{% endblock %}
+            </h1>
+
+            <nav aria-label="Related">
+                <ul>
+                    {% for link in navigation %}
+                        <li>
+                            <a href="{{ link.href }}">
+                                {{ link.text }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+
+            <div>
+                {% block content %}
+                    <p>
+                        Page content here.
+                    </p>
+                {% endblock %}
+            </div>
+
+            {% block aside %}{% endblock %}
+        </main>
+
+        <footer>
+            <p>
+                This work is licensed under a
+                <a href="http://creativecommons.org/licenses/by-nc-sa/2.0/"
+                    target="_blank" rel="nofollow">Creative Commons License</a>.
+            </p>
+
+            <p>
+                Game Design and Code: Copyright © 2002-2005, Eric Stevens &amp;
+                JT Traub, © 2006-2007, Dragonprime Development Team
+            </p>
+
+            <p>
+                Design: Mourn Template © JT Traub, based on Jade by Josh Canning
+                2004 of
+                <a href="http://hfs.cjb.net/" target="_blank"
+                    rel="nofollow">HFS</a>
+            </p>
+
+            <p>
+                Version: michaelvcolianna/lotgd+feature/improvements
+            </p>
+
+            <nav aria-label="Supplemental">
+                <ul>
+                    <li>
+                        <a href="#" target="_blank"
+                            rel="nofollow">Source code</a>
+                    </li>
+
+                    <li>
+                        <a href="#" target="_blank"
+                            rel="nofollow">Report an issue</a>
+                    </li>
+                </ul>
+            </nav>
+        </footer>
+
+        <script defer src="/js/main.js"></script>
+    </body>
+</html>

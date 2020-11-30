@@ -63,7 +63,7 @@ if(!empty($_POST))
             );
         }
 
-        $db->clear();
+        $db = null;
 
         $complete = true;
     }
@@ -116,7 +116,7 @@ if(!empty($_POST))
                     <div>
                         <label for="username">Username</label>
                         <input id="username" name="username" type="text"
-                            autocomplete="nickname"
+                            autocomplete="username"
                             value="<?= $_POST['username'] ?? ''; ?>"
                             required <?= !$errors['password'] ? 'autofocus' : ''; ?>
                             />

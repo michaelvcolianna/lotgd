@@ -1,6 +1,11 @@
 # Legend of the Green Dragon
 
-_Work in progress._
+_This feature branch is a major work in progress. I'm making incremental steps_
+_toward having a front controller, non-public scripts, a real database_
+_implementation, etc. but that's going to take a while. There will be a lot of_
+_fake spaghetti strewn about as I rework things, since it's easier to rewrite_
+_my own bad code than most of the old, procedural stuff. I do *NOT* recommend_
+_using any of this code, even in a local environment. -MVC_
 
 This is the Dragonprime 1.1.2 code, modified to run from a `/public` directory,
 with a bootstrapper to cover any issues with the code. As such, it probably
