@@ -6,7 +6,7 @@ $tables = array();
 $start = getmicrotime();
 for ($i=0;$i<db_num_rows($result);$i++){
     $cleanup = db_fetch_assoc($result);
-    $val = current(db_fetch_assoc($result));
+    $val = current($cleanup);
 	db_query("OPTIMIZE TABLE $val");
 	array_push($tables,$val);
 }
