@@ -11,9 +11,9 @@
 function register_global(&$var){
     @reset($var);
     foreach($var as $key => $val){
-		global $$key;
-		$$key = $val;
-	}
-	@reset($var);
+        global $$key;
+        $$key = $val;
+    }
+    @reset($var);
 }
 ?>

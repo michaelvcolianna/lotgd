@@ -7,39 +7,39 @@ require_once("lib/e_rand.php");
 require_once("lib/substitute.php");
 
 function select_taunt() {
-	global $session, $badguy;
+    global $session, $badguy;
 
-	$sql = "SELECT taunt FROM " . db_prefix("taunts") .
-		" ORDER BY rand(".e_rand() . ") LIMIT 1";
+    $sql = "SELECT taunt FROM " . db_prefix("taunts") .
+        " ORDER BY rand(".e_rand() . ") LIMIT 1";
 
-	$result = db_query($sql);
-	if ($result) {
-		$row = db_fetch_assoc($result);
-		$taunt = $row['taunt'];
-	} else {
-		$taunt = "`5\"`6%w's mother wears combat boots`5\", screams %W.";
-	}
+    $result = db_query($sql);
+    if ($result) {
+        $row = db_fetch_assoc($result);
+        $taunt = $row['taunt'];
+    } else {
+        $taunt = "`5\"`6%w's mother wears combat boots`5\", screams %W.";
+    }
 
-	$taunt = substitute($taunt);
-	return $taunt;
+    $taunt = substitute($taunt);
+    return $taunt;
 }
 
 function select_taunt_array(){
-	global $session, $badguy;
+    global $session, $badguy;
 
-	$sql = "SELECT taunt FROM " . db_prefix("taunts") .
-		" ORDER BY rand(".e_rand() . ") LIMIT 1";
+    $sql = "SELECT taunt FROM " . db_prefix("taunts") .
+        " ORDER BY rand(".e_rand() . ") LIMIT 1";
 
-	$result = db_query($sql);
-	if ($result) {
-		$row = db_fetch_assoc($result);
-		$taunt = $row['taunt'];
-	} else {
-		$taunt = "`5\"`6%w's mother wears combat boots`5\", screams %W.";
-	}
+    $result = db_query($sql);
+    if ($result) {
+        $row = db_fetch_assoc($result);
+        $taunt = $row['taunt'];
+    } else {
+        $taunt = "`5\"`6%w's mother wears combat boots`5\", screams %W.";
+    }
 
-	$taunt = substitute_array($taunt);
-	array_unshift($taunt, true, "taunts");
-	return $taunt;
+    $taunt = substitute_array($taunt);
+    array_unshift($taunt, true, "taunts");
+    return $taunt;
 }
 ?>

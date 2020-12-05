@@ -37,15 +37,15 @@ addnav("Other");
 addnav("??F.A.Q. (Frequently Asked Questions)", "petition.php?op=faq",false,true);
 
 if ($session['user']['superuser'] & SU_EDIT_COMMENTS){
-	addnav("Superuser");
-	addnav(",?Comment Moderation","moderate.php");
+    addnav("Superuser");
+    addnav(",?Comment Moderation","moderate.php");
 }
 if ($session['user']['superuser']&~SU_DOESNT_GIVE_GROTTO){
-	addnav("Superuser");
+    addnav("Superuser");
   addnav("X?Superuser Grotto","superuser.php");
 }
 if ($session['user']['superuser'] & SU_INFINITE_DAYS){
-	addnav("Superuser");
+    addnav("Superuser");
   addnav("/?New Day","newday.php");
 }
 

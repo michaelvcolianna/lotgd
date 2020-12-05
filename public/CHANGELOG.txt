@@ -80,14 +80,14 @@ Changes from 1.1.0 to 1.1.1
 
 [FEATURE] - fighting multiple enemies now possible
 [FEATURE] - badguys can now have new flags set:
-			1) essentialleader: either "true" or a text like "{badguy} falls and all other enemies surrender".
-				This flag defines one or more enemies as "essential" for the fight. Should one of them die, the fight will be won, even if some badguys are still alive.
-			2) cannotbetarget: pretty much self-explanatory. A creature with this flag set can never be your target in battle. In can only be damaged by riposting or area buffs. To win such a battle, the following flag should be set, too.
-			3) fleesifalone: If only badguys with this flag set are left living, they will abort the fight and flee.
-			4) alwaysattacks: Normally only a certain amount of enemies can attack per round (default: 4). Enemies with this flag do not count towards this limit. (Imagine a swarm of bees. ;) )
+            1) essentialleader: either "true" or a text like "{badguy} falls and all other enemies surrender".
+                This flag defines one or more enemies as "essential" for the fight. Should one of them die, the fight will be won, even if some badguys are still alive.
+            2) cannotbetarget: pretty much self-explanatory. A creature with this flag set can never be your target in battle. In can only be damaged by riposting or area buffs. To win such a battle, the following flag should be set, too.
+            3) fleesifalone: If only badguys with this flag set are left living, they will abort the fight and flee.
+            4) alwaysattacks: Normally only a certain amount of enemies can attack per round (default: 4). Enemies with this flag do not count towards this limit. (Imagine a swarm of bees. ;) )
 [FEATURE] - Buffs can have new flags set:
-			1) aura: If this is set to true, 1/3 of the healing power is also given to any healable companion. This flag only works for buffs with the "regen" power.
-			2) areadamage: Normally a buff will only harm the enemy you have targetted. Areadamge harms every enemy around. (Only valid for buffs with "minioncount").
+            1) aura: If this is set to true, 1/3 of the healing power is also given to any healable companion. This flag only works for buffs with the "regen" power.
+            2) areadamage: Normally a buff will only harm the enemy you have targetted. Areadamge harms every enemy around. (Only valid for buffs with "minioncount").
 [FEATURE] - companions can now join you in fights
 [FEATURE] - companions can be suspended just like buffs
 [FEATURE] - last motd item now shown in daily news
@@ -137,17 +137,17 @@ Changes from 1.1.0 to 1.1.1
 [UPDATE] - racenames SHOULD now be adressed within the "race" scheme... translate_inline($session['user']['race'],"race") should therefore get you the race name. For people who don't want to remember the scheme and add a few more chars to their translate_inline please use the function get_racename($thisuser=TRUE). If you want the race of the current user, call get_racename(), if you have fetched the race i.e. from the DB directly for a third user, enter the plain race as parameter $thisuser.
 [UPDATE] - now core includes .htaccess files who (if apache accepts them) block ANY direct access from the outside to the lib+modules directory (incl. subdirs) to prevent execution of code from the outside without the runmodule or other files in your homeroot. This affects all php files, no other files
 [UPDATE] - Many module files have been split up into libs to decrease memory usage (lib files for / files in lib/$filename and for modules in /modules/$filename):
-		-modules/oldman.php
-		-graveyard.php (optimized for tormenting)
-		-user.php (split up)
-		-petition.php (2/3 FAQs are not needed for petitions, and the other way around)
-		-installer.php (though not needed often, it is better to have the steps better displayed -better to modify-)
-		-newday.php (some parts like dk-point spending)
-		-about.php (general split up)
-		-inn.php (sanity reasons, also switched the villagenav up)
-		-modules/cities.php (village doesn't need travels loaded everytime)
-		-modules/customeq.php (gets called only in charstats mostly)
-		-modules/scavenge.php (village special not executed 20kb of code all the time... only when running it needs it)
+        -modules/oldman.php
+        -graveyard.php (optimized for tormenting)
+        -user.php (split up)
+        -petition.php (2/3 FAQs are not needed for petitions, and the other way around)
+        -installer.php (though not needed often, it is better to have the steps better displayed -better to modify-)
+        -newday.php (some parts like dk-point spending)
+        -about.php (general split up)
+        -inn.php (sanity reasons, also switched the villagenav up)
+        -modules/cities.php (village doesn't need travels loaded everytime)
+        -modules/customeq.php (gets called only in charstats mostly)
+        -modules/scavenge.php (village special not executed 20kb of code all the time... only when running it needs it)
 
 [UPDATE] - updated specialtydarkarts.php to summon a skeleton warrior as companion, not as a buff
 [UPDATE] - updated specialtymysticpower.php to have an aura buff (regeneration) and an area buff (earth fist)

@@ -7,8 +7,8 @@ $start = getmicrotime();
 for ($i=0;$i<db_num_rows($result);$i++){
     $cleanup = db_fetch_assoc($result);
     $val = current($cleanup);
-	db_query("OPTIMIZE TABLE $val");
-	array_push($tables,$val);
+    db_query("OPTIMIZE TABLE $val");
+    array_push($tables,$val);
 }
 $time = round(getmicrotime() - $start,2);
 require_once("lib/gamelog.php");

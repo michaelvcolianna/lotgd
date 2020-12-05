@@ -13,30 +13,30 @@ $superusermessage = getsetting("superuseryommessage","Asking an admin for gems, 
 $op = httpget('op');
 $id = (int)httpget('id');
 if($op=="del"){
-	$sql = "DELETE FROM " . db_prefix("mail") . " WHERE msgto='".$session['user']['acctid']."' AND messageid='$id'";
-	db_query($sql);
-	invalidatedatacache("mail-{$session['user']['acctid']}");
-	header("Location: mail.php");
-	exit();
+    $sql = "DELETE FROM " . db_prefix("mail") . " WHERE msgto='".$session['user']['acctid']."' AND messageid='$id'";
+    db_query($sql);
+    invalidatedatacache("mail-{$session['user']['acctid']}");
+    header("Location: mail.php");
+    exit();
 }elseif($op=="process"){
-	$msg = httppost('msg');
-	if (!is_array($msg) || count($msg)<1){
-		$session['message'] = "`\$`bYou cannot delete zero messages!  What does this mean?  You pressed \"Delete Checked\" but there are no messages checked!  What sort of world is this that people press buttons that have no meaning?!?`b`0";
-		header("Location: mail.php");
-		exit();
-	}else{
-		$sql = "DELETE FROM " . db_prefix("mail") . " WHERE msgto='".$session['user']['acctid']."' AND messageid IN ('".join("','",$msg)."')";
-		db_query($sql);
-		invalidatedatacache("mail-{$session['user']['acctid']}");
-		header("Location: mail.php");
-		exit();
-	}
+    $msg = httppost('msg');
+    if (!is_array($msg) || count($msg)<1){
+        $session['message'] = "`\$`bYou cannot delete zero messages!  What does this mean?  You pressed \"Delete Checked\" but there are no messages checked!  What sort of world is this that people press buttons that have no meaning?!?`b`0";
+        header("Location: mail.php");
+        exit();
+    }else{
+        $sql = "DELETE FROM " . db_prefix("mail") . " WHERE msgto='".$session['user']['acctid']."' AND messageid IN ('".join("','",$msg)."')";
+        db_query($sql);
+        invalidatedatacache("mail-{$session['user']['acctid']}");
+        header("Location: mail.php");
+        exit();
+    }
 }elseif ($op=="unread"){
-	$sql = "UPDATE " . db_prefix("mail") . " SET seen=0 WHERE msgto='".$session['user']['acctid']."' AND messageid='$id'";
-	db_query($sql);
-	invalidatedatacache("mail-{$session['user']['acctid']}");
-	header("Location: mail.php");
-	exit();
+    $sql = "UPDATE " . db_prefix("mail") . " SET seen=0 WHERE msgto='".$session['user']['acctid']."' AND messageid='$id'";
+    db_query($sql);
+    invalidatedatacache("mail-{$session['user']['acctid']}");
+    header("Location: mail.php");
+    exit();
 }
 
 popup_header("Ye Olde Poste Office");
@@ -57,35 +57,35 @@ rawoutput("<table width='50%' border='0' cellpadding='0' cellspacing='2'>");
 rawoutput("<tr>");
 $count_mailfunctions = count($mailfunctions);
 for($i=0;$i<$count_mailfunctions;++$i) {
-	if (is_array($mailfunctions[$i])) {
-		if (count($mailfunctions[$i])==2) {
-			$page = $mailfunctions[$i][0];
-			$name = $mailfunctions[$i][1]; // already translated
-			rawoutput("<td><a href='$page' class='motd'>$name</a></td>");
-			// No need for addnav since mail function pages are (or should be) outside the page nav system.
-		}
-	}
+    if (is_array($mailfunctions[$i])) {
+        if (count($mailfunctions[$i])==2) {
+            $page = $mailfunctions[$i][0];
+            $name = $mailfunctions[$i][1]; // already translated
+            rawoutput("<td><a href='$page' class='motd'>$name</a></td>");
+            // No need for addnav since mail function pages are (or should be) outside the page nav system.
+        }
+    }
 }
 rawoutput("</tr></table>");
 output_notl("`n`n");
 
 if($op=="send"){
-	require("lib/mail/case_send.php");
+    require("lib/mail/case_send.php");
 }
 
 switch ($op) {
 case "read":
-	require("lib/mail/case_read.php");
-	break;
+    require("lib/mail/case_read.php");
+    break;
 case "address":
-	require("lib/mail/case_address.php");
-	break;
+    require("lib/mail/case_address.php");
+    break;
 case "write":
-	require("lib/mail/case_write.php");
-	break;
+    require("lib/mail/case_write.php");
+    break;
 default:
-	require("lib/mail/case_default.php");
-	break;
+    require("lib/mail/case_default.php");
+    break;
 }
 popup_footer();
 ?>

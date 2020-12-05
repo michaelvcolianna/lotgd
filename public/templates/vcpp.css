@@ -92,12 +92,12 @@ select {
 /** input buttons (e.g. Submit, Search, Add) **/
 .button {
     font-family: "Courier New", "Lucida Console", monospace;
-    font-size: 12px;  
-    color: #ffffff;  
-    background-color: #938f87;  
-    border-top: 1px solid #cccccc;  
-    border-left: 1px solid #cccccc;  
-    border-right: 1px solid #333333;  
+    font-size: 12px;
+    color: #ffffff;
+    background-color: #938f87;
+    border-top: 1px solid #cccccc;
+    border-left: 1px solid #cccccc;
+    border-right: 1px solid #333333;
     border-bottom: 1px solid #333333;
 }
 
@@ -119,18 +119,18 @@ select {
 .colLtBlack   { color: #999999; }
 .colDkOrange  { color: #994400; }
 .colLtOrange  { color: #ff9900; }
-.colBlue  		{ color: #0070FF; }
-.colLime  		{ color: #DDFFBB; }
-.colBlack  		{ color: #000000; }
-.colRose 		{ color: #EEBBEE; }
-.colblueviolet 	{ color: #9A5BEE; }
-.coliceviolet	{ color: #AABBEE; }
-.colLtBrown 	{ color: #F8DB83; }
-.colDkBrown 	{ color: #6b563f; }
-.colXLtGreen	{ color: #aaff99; }
-.colAttention 	{ background-color: #00FF00; color: #FF0000; }
-.colWhiteBlack 	{ background-color: #FFFFFF; color: #000000; }
-.colBack  		{ background-color: #00FFFF; color: #000000; }
+.colBlue          { color: #0070FF; }
+.colLime          { color: #DDFFBB; }
+.colBlack          { color: #000000; }
+.colRose         { color: #EEBBEE; }
+.colblueviolet     { color: #9A5BEE; }
+.coliceviolet    { color: #AABBEE; }
+.colLtBrown     { color: #F8DB83; }
+.colDkBrown     { color: #6b563f; }
+.colXLtGreen    { color: #aaff99; }
+.colAttention     { background-color: #00FF00; color: #FF0000; }
+.colWhiteBlack     { background-color: #FFFFFF; color: #000000; }
+.colBack          { background-color: #00FFFF; color: #000000; }
 .colbeige  { color: #F5F5DC; }
 .colkhaki  { color: #F0E68C; }
 .coldarkkhaki  { color: #BDB76B; }
@@ -163,7 +163,7 @@ a.nav { /* nav link (e.g. Forest, Quit, Travel) */
     width: 182px;
     height: auto;
     padding: 1px 1px 1px 20px;
-    float: left; 
+    float: left;
     clear: none;
 }
 a:hover.nav { /* nav link on mouseover */
@@ -198,7 +198,7 @@ a.hotmotd { /* when a new motd or yom is available */
 }
 
 /** links - translator tool **/
-a.t { 
+a.t {
     width: 10px;
     height: 10px;
     border: 1px dotted #0000ff;
@@ -209,7 +209,7 @@ a.t {
     padding-left: 1px;
     padding-right: 1px;
 }
-a.thot { 
+a.thot {
     width: 10px;
     height: 10px;
     border: 1px solid #ff0000;
@@ -222,7 +222,7 @@ a.thot {
 }
 
 /** tables - login **/
-table.login { 
+table.login {
     height: 200px;
     width: 232px;
     background-image: url(vcpp/login.gif);
@@ -236,14 +236,14 @@ table.nav {
     width: 200px;
 }
 td.nav a.thot {
-	position: absolute;
-	left: 0px;
-	height: auto;
+    position: absolute;
+    left: 0px;
+    height: auto;
 }
 td.nav a.t {
-	position: absolute;
-	left: 0px;
-	height: auto;
+    position: absolute;
+    left: 0px;
+    height: auto;
 }
 
 /** tables - character stats (i.e. "vital info") **/
@@ -266,7 +266,7 @@ td.charinfo { /* vital info data */
     padding-left: 20px;
     border-top: thin solid #d4d0c8;
     border-right-style: none;
-    border-bottom-style: none; 
+    border-bottom-style: none;
     border-left-style: none;
     cursor: default;
     color: #333333;
@@ -279,7 +279,7 @@ td.pageheader { /* heading for the main page */
     background-repeat: no-repeat;
     height: 85px;
 }
-td.body { 
+td.body {
     font-family: "Courier New", "Lucida Console", monospace;
     font-size: 12px;
 }

@@ -17,7 +17,7 @@ a {
     color: #ff9900;
     text-decoration: none;
 }
-a:hover { 
+a:hover {
     color: #ff6600;
 }
 
@@ -98,12 +98,12 @@ select {
 /** input buttons (e.g. Submit, Search, Add) **/
 .button {
     font-family: "Lucida Console", "Terminal", monospace;
-    font-size: 11px;  
-    color: #000000;  
-    background-color: #cc6600;  
-    border-top: 1px solid #ff9933;  
-    border-left: 1px solid #ff9933;  
-    border-right: 1px solid #663300;  
+    font-size: 11px;
+    color: #000000;
+    background-color: #cc6600;
+    border-top: 1px solid #ff9933;
+    border-left: 1px solid #ff9933;
+    border-right: 1px solid #663300;
     border-bottom: 1px solid #663300;
 }
 
@@ -125,17 +125,17 @@ select {
 .colLtBlack   { color: #666666; }
 .colDkOrange  { color: #994400; }
 .colLtOrange  { color: #ff9900; }
-.colBlue  		{ color: #0070FF; }
-.colLime  		{ color: #DDFFBB; }
-.colBlack  		{ color: #000000; }
-.colRose 		{ color: #EEBBEE; }
-.colblueviolet 	{ color: #9A5BEE; }
-.coliceviolet	{ color: #AABBEE; }
-.colLtBrown 	{ color: #F8DB83; }
-.colDkBrown 	{ color: #6b563f; }
-.colXLtGreen	{ color: #aaff99; }
-.colAttention 	{ background-color: #00FF00; color: #FF0000; }
-.colWhiteBlack 	{ background-color: #FFFFFF; color: #000000; }
+.colBlue          { color: #0070FF; }
+.colLime          { color: #DDFFBB; }
+.colBlack          { color: #000000; }
+.colRose         { color: #EEBBEE; }
+.colblueviolet     { color: #9A5BEE; }
+.coliceviolet    { color: #AABBEE; }
+.colLtBrown     { color: #F8DB83; }
+.colDkBrown     { color: #6b563f; }
+.colXLtGreen    { color: #aaff99; }
+.colAttention     { background-color: #00FF00; color: #FF0000; }
+.colWhiteBlack     { background-color: #FFFFFF; color: #000000; }
 .colbeige  { color: #F5F5DC; }
 .colkhaki  { color: #F0E68C; }
 .coldarkkhaki  { color: #BDB76B; }
@@ -144,7 +144,7 @@ select {
 .collightsalmon  { color: #FFA07A; }
 .colsalmon  { color: #FA8072; }
 .colwheat  { color: #F5DEB3; }
-.coltan  { color: #D2B48C; }.colBack  		{ background-color: #00FFFF; color: #000000; }
+.coltan  { color: #D2B48C; }.colBack          { background-color: #00FFFF; color: #000000; }
 .colLtLinkBlue { color: #0099FF; }
 .colDkLinkBlue { color: #006BB3; }
 .colDkRust { color: #8D6060; }
@@ -169,7 +169,7 @@ a.nav { /* nav link (e.g. Forest, Quit, Travel) */
     width: auto;
     height: auto;
     padding: 1px 1px 1px 4px;
-    float: left; 
+    float: left;
     clear: none;
 }
 a:hover.nav { /* nav link on mouseover */
@@ -205,7 +205,7 @@ a.hotmotd { /* when a new motd or yom is available */
 }
 
 /** links - translator tool **/
-a.t { 
+a.t {
     width: 8px;
     height: 10px;
     border: 1px dotted #0000ee;
@@ -216,7 +216,7 @@ a.t {
     padding-left: 1px;
     padding-right: 1px;
 }
-a.thot { 
+a.thot {
     width: 8px;
     height: 10px;
     border: 1px solid #ee0000;
