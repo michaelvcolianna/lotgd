@@ -203,15 +203,16 @@ function previewfield($name, $startdiv=false, $talkline="says", $showcharsleft=t
 			}
 		}
 	}
-	rawoutput("<div id='previewtext$name'></div>");
-	rawoutput("
-		<script language='JavaScript'>
-			input$name.addEvent('keyup', function(){
-				window.localStorage['value'] = input$name.value;
-				window.localStorage['timestamp'] = (new Date()). getTime();
-			}, false);
-			input$name.value = window.localStorage['value'];
-		</script>
-	");
+    rawoutput("<div id='previewtext$name'></div>");
+    // @note Don't think this is needed
+	// rawoutput("
+	// 	<script language='JavaScript'>
+	// 		input$name.addEventListener('keyup', function(){
+	// 			window.localStorage['value'] = input$name.value;
+	// 			window.localStorage['timestamp'] = (new Date()). getTime();
+	// 		}, false);
+	// 		input$name.value = window.localStorage['value'];
+	// 	</script>
+	// ");
 }
 ?>

@@ -8,8 +8,12 @@ function do_forced_nav($anonymous,$overrideforced){
 	global $baseaccount, $session,$REQUEST_URI;
 	rawoutput("<!--\nAllowAnonymous: ".($anonymous?"True":"False")."\nOverride Forced Nav: ".($overrideforced?"True":"False")."\n-->");
 	if (isset($session['loggedin']) && $session['loggedin']){
-		$sql = "SELECT *  FROM ".db_prefix("accounts")." WHERE acctid = '".$session['user']['acctid']."'";
-		$result = db_query($sql);
+        $sql_table = db_prefix('accounts');
+        $sql_acctid = $session['user']['acctid'];
+        $sql = <<<SQL
+SELECT * FROM {$sql_table} WHERE acctid = {$sql_acctid};
+SQL;
+        $result = db_query($sql);
 		if (db_num_rows($result)==1){
 			$session['user']=db_fetch_assoc($result);
 			$baseaccount = $session['user'];
