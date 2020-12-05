@@ -31,7 +31,7 @@ function page_header(){
 
 	//in case this didn't already get called (such as on a database error)
 	translator_setup();
-	prepare_template();
+    prepare_template();
 	$script = substr($SCRIPT_NAME,0,strrpos($SCRIPT_NAME,"."));
 	if ($script) {
 		if (!array_key_exists($script,$runheaders))
@@ -55,9 +55,9 @@ function page_header(){
 	$title = sanitize($title);
 	calculate_buff_fields();
 
-	$header = $template['header'];
-	$header=str_replace("{title}",$title,$header);
-	$header.=tlbutton_pop();
+    $header = $template['header'];
+    Template::$values['title'] = $title;
+    Template::$values['tlbutton_pop'] = tlbutton_pop();
 }
 
 /**
@@ -85,7 +85,7 @@ function page_footer($saveuser=true){
 		$REQUEST_URI,$pagestarttime,$quickkeys,$template,$y2,$z2,
 		$logd_version,$copyright,$SCRIPT_NAME,$nopopups, $footer,
 		$dbinfo;
-	$z = $y2^$z2;
+    $z = $y2^$z2;
 	$footer = $template['footer'];
 	//page footer module hooks
 	$script = substr($SCRIPT_NAME,0,strpos($SCRIPT_NAME,"."));
@@ -109,10 +109,13 @@ function page_footer($saveuser=true){
 	unset($replacementbits['__scriptfile__']);
 	//output any template part replacements that above hooks need (eg,
 	//advertising)
-	reset($replacementbits);
+    reset($replacementbits);
 	foreach($replacementbits as $key => $val){
-		$header = str_replace("{".$key."}","{".$key."}".join($val,""),$header);
-		$footer = str_replace("{".$key."}","{".$key."}".join($val,""),$footer);
+        // @todo Template()
+		// $header = str_replace("{".$key."}","{".$key."}".join($val,""),$header);
+        // $footer = str_replace("{".$key."}","{".$key."}".join($val,""),$footer);
+        // @test Template()
+        Template::$values[$key] = '{' . $key . '}' . implode('', $val);
 	}
 
 	$builtnavs = buildnavs();
@@ -141,23 +144,25 @@ function page_footer($saveuser=true){
 		$session['needtoviewmotd']=false;
 	}
 	$pre_headscript = "<LINK REL=\"shortcut icon\" HREF=\"favicon.ico\" TYPE=\"image/x-icon\"/>";
-	if ($headscript>""){
-		$header=str_replace("{headscript}",$pre_headscript."<script language='JavaScript'>".$headscript."</script>",$header);
+	if (!empty($headscript)){
+        $headscript = $pre_headscript . '<script language="Javascript">' . $headscript . '</script>';
 	}else{
-		$header = str_replace("{headscript}",$pre_headscript,$header);
-	}
+        $headscript = $pre_headscript;
+    }
+    Template::$values['headscript'] = $headscript;
 
 	$script = "";
 
 	if (!isset($session['user']['name'])) $session['user']['name']="";
 	if (!isset($session['user']['login'])) $session['user']['login']="";
 
-	//clean up unclosed output tags.
-	foreach($nestedtags as $key => $val){
-		if ($nestedtags[$key] === true) $output.="</$key>";
+    // @note Don't think this is needed
+    //clean up unclosed output tags.
+	// foreach($nestedtags as $key => $val){
+	// 	if ($nestedtags[$key] === true) $output.="</$key>";
 
-		unset($nestedtags[$key]);
-	}
+	// 	unset($nestedtags[$key]);
+	// }
 	//output keypress script
 	$script.="<script language='JavaScript'>
 	<!--
@@ -184,16 +189,20 @@ function page_footer($saveuser=true){
 		}else{";
 	reset($quickkeys);
 	foreach($quickkeys as $key => $val){
-		$script.="\n			if (c == '".strtoupper($key)."') { $val; return false; }";
+        $tempkey = strtoupper($key);
+        $tempval = <<<JAVASCRIPT
+if (c == '{$tempkey}') { {$val}; return false; }
+JAVASCRIPT;
+        $script.= "\n" . $tempval;
 	}
 	$script.="
 		}
 	}
 	//-->
-	</script>";
+    </script>";
+    Template::$values['script'] = $script;
 
-	//handle paypal
-	if (strpos($footer,"{paypal}") || strpos($header,"{paypal}")){ $palreplace="{paypal}"; }else{ $palreplace="{stats}"; }
+    // handle paypal
 
 	//NOTICE |
 	//NOTICE | Although under the license, you're not required to keep this
@@ -292,36 +301,41 @@ function page_footer($saveuser=true){
 <input type="image" src="images/paypal2.gif" border="0" name="submit" alt="Donate!">
 </form>';
 	}
-	$paypalstr .= '</td></tr></table>';
-	$footer=str_replace($palreplace,(strpos($palreplace,"paypal")?"":"{stats}").$paypalstr,$footer);
-	$header=str_replace($palreplace,(strpos($palreplace,"paypal")?"":"{stats}").$paypalstr,$header);
+    $paypalstr .= '</td></tr></table>';
+    Template::$values['paypal'] = $paypalstr;
+
+    // @note Don't think this is needed
+	// $footer=str_replace($palreplace,(strpos($palreplace,"paypal")?"":"{stats}").$paypalstr,$footer);
+	// $header=str_replace($palreplace,(strpos($palreplace,"paypal")?"":"{stats}").$paypalstr,$header);
 	//NOTICE |
 	//NOTICE | Although I will not deny you the ability to remove the above
 	//NOTICE | paypal link, I do request, as the author of this software
 	//NOTICE | which I made available for free to you that you leave it in.
 	//NOTICE |
 
-	//output the nav
-	$footer = str_replace("{".($z)."}",$$z,$footer);
-	$header=str_replace("{nav}",$builtnavs,$header);
-	$footer=str_replace("{nav}",$builtnavs,$footer);
-	//output the motd
+    //output the nav
+    Template::$values['copyright'] = $$z;
+    Template::$values['nav'] = $builtnavs;
 
-	$header = str_replace("{motd}", motdlink(), $header);
-	$footer = str_replace("{motd}", motdlink(), $footer);
-	//output the mail link
+    //output the motd
+    Template::$values['motd'] = motdlink();
+
+    //output the mail link
+    Template::$values['mail'] = null;
 	if (isset($session['user']['acctid']) && $session['user']['acctid']>0 && $session['user']['loggedin']) {
-		$header=str_replace("{mail}",maillink(),$header);
-		$footer=str_replace("{mail}",maillink(),$footer);
-	}else{
-		$header=str_replace("{mail}","",$header);
-		$footer=str_replace("{mail}","",$footer);
+        Template::$values['mail'] = maillink();
 	}
-	//output petition count
 
-	$header=str_replace("{petition}","<a href='petition.php' onClick=\"".popup("petition.php").";return false;\" target='_blank' align='right' class='motd'>".translate_inline("Petition for Help")."</a>",$header);
-	$footer=str_replace("{petition}","<a href='petition.php' onClick=\"".popup("petition.php").";return false;\" target='_blank' align='right' class='motd'>".translate_inline("Petition for Help")."</a>",$footer);
-	if ($session['user']['superuser'] & SU_EDIT_PETITIONS){
+    //output petition count
+    $petition_js = popup('petition.php');
+    $petition_tl = translate_inline("Petition for Help");
+    $petition_nav_link = <<<HTML
+<a href="petition.php" onClick="{$petition_js}" target="_blank" align="right" class="motd">{$petition_tl}</a>
+HTML;
+    Template::$values['petition'] = $petition_nav_link;
+
+    // admin portion
+    if ($session['user']['superuser'] & SU_EDIT_PETITIONS){
 		$sql = "SELECT count(petitionid) AS c,status FROM " . db_prefix("petitions") . " GROUP BY status";
 		$result = db_query_cached($sql,"petition_counts");
 		$petitions=array(0=>0,1=>0,2=>0,3=>0,4=>0,5=>0,6=>0,7=>0);
@@ -339,39 +353,48 @@ function page_footer($saveuser=true){
 			$p = "<a href='viewpetition.php'>$pet</a>";
 			addnav("", "viewpetition.php");
 		}
-		$p .= " `\${$petitions[5]}`0|`^{$petitions[4]}`0|`b{$petitions[0]}`b|{$petitions[1]}|`!{$petitions[3]}`0|`#{$petitions[7]}`0|`%{$petitions[6]}`0|`i{$petitions[2]}`i";
-		$pcount = templatereplace("petitioncount", array("petitioncount"=>appoencode($p, true)));
-		$footer = str_replace("{petitiondisplay}", $pcount, $footer);
-		$header = str_replace("{petitiondisplay}", $pcount, $header);
+        $p .= " `\${$petitions[5]}`0|`^{$petitions[4]}`0|`b{$petitions[0]}`b|{$petitions[1]}|`!{$petitions[3]}`0|`#{$petitions[7]}`0|`%{$petitions[6]}`0|`i{$petitions[2]}`i";
+        // @todo Template()
+        // $pcount = templatereplace("petitioncount", array("petitioncount"=>appoencode($p, true)));
+		// $footer = str_replace("{petitiondisplay}", $pcount, $footer);
+        // $header = str_replace("{petitiondisplay}", $pcount, $header);
 	} else {
-		$footer = str_replace("{petitiondisplay}", "", $footer);
-		$header = str_replace("{petitiondisplay}", "", $header);
+        Template::$values['petitiondisplay'] = null;
 	}
-	//output character stats
-	$footer=str_replace("{stats}",$charstats,$footer);
-	$header=str_replace("{stats}",$charstats,$header);
-	//do something -- I don't know what
-	$header=str_replace("{script}",$script,$header);
-	//output view PHP source link
-	$sourcelink = "source.php?url=".preg_replace("/[?].*/","",($_SERVER['REQUEST_URI']));
-	$footer=str_replace("{source}","<a href='$sourcelink' onclick=\"".popup($sourcelink).";return false;\" target='_blank'>".translate_inline("View PHP Source")."</a>",$footer);
-	$header=str_replace("{source}","<a href='$sourcelink' onclick=\"".popup($sourcelink).";return false;\" target='_blank'>".translate_inline("View PHP Source")."</a>",$header);
-	//output version
-	$footer=str_replace("{version}", "Version: $logd_version", $footer);
-	//output page generation time
+
+    //output character stats
+    Template::$values['stats'] = $charstats;
+
+    //output view PHP source link
+    $sourcelink = "source.php?url=".preg_replace("/[?].*/","",($_SERVER['REQUEST_URI']));
+    $source_js = popup($sourcelink) . ';return false;';
+    $source_tl = translate_inline('View PHP Source');
+    $source = <<<HTML
+<a href="{$sourcelink}" onclick="{$source_js}" target="_blank">{$source_tl}</a>
+HTML;
+    Template::$values['source'] = $source;
+
+    //output version
+    Template::$values['version'] = 'Version: ' . $logd_version;
+
+    //output page generation time
 	$gentime = getmicrotime()-$pagestarttime;
 	$session['user']['gentime']+=$gentime;
-	$session['user']['gentimecount']++;
-	$footer=str_replace("{pagegen}","Page gen: ".round($gentime,3)."s / ".$dbinfo['queriesthishit']." queries (".round($dbinfo['querytime'],3)."s), Ave: ".round($session['user']['gentime']/$session['user']['gentimecount'],3)."s - ".round($session['user']['gentime'],3)."/".round($session['user']['gentimecount'],3)."",$footer);
+    $session['user']['gentimecount']++;
+    Template::$values['pagegen'] = 'Page gen: ' . round($gentime, 3) . 's / ' . $dbinfo['queriesthishit'] . ' queries (' . round($dbinfo['querytime'], 3) . 's), Ave: ' . round($session['user']['gentime'] / $session['user']['gentimecount'], 3) . 's - ' . round($session['user']['gentime'], 3) . '/' . round($session['user']['gentimecount'], 3);
 
 	tlschema();
 
+    // @note Don't think these are needed
 	//clean up spare {fields}s from header and footer (in case they're not used)
-	$footer = preg_replace("/{[^} \t\n\r]*}/i","",$footer);
-	$header = preg_replace("/{[^} \t\n\r]*}/i","",$header);
+	// $footer = preg_replace("/{[^} \t\n\r]*}/i","",$footer);
+	// $header = preg_replace("/{[^} \t\n\r]*}/i","",$header);
 
-	//finalize output
-	$output=$header.$output.$footer;
+    //finalize output
+    $raw_output = $header->render(Template::$values);
+    $raw_output.= $output;
+    $raw_output.= $footer->render(Template::$values);
+    $output = $raw_output;
 	$session['user']['gensize']+=strlen($output);
 	$session['output']=$output;
 	if ($saveuser === true) {
@@ -404,8 +427,8 @@ function popup_header($title="Legend of the Green Dragon"){
 	$title = call_user_func_array("sprintf_translate", $arguments);
 	$title = holidayize($title,'title');
 
-	$header = $template['popuphead'];
-	$header = str_replace("{title}", $title, $header);
+    $header = $template['popuphead'];
+    Template::$values['title'] = $title;
 }
 
 /**
@@ -430,18 +453,25 @@ function popup_footer(){
 	//output any template part replacements that above hooks need
 	reset($replacementbits);
 	foreach($replacementbits as $key => $val){
-		$header = str_replace("{".$key."}","{".$key."}".join($val,""),$header);
-		$footer = str_replace("{".$key."}","{".$key."}".join($val,""),$footer);
+        // @todo Template()
+		// $header = str_replace("{".$key."}","{".$key."}".join($val,""),$header);
+        // $footer = str_replace("{".$key."}","{".$key."}".join($val,""),$footer);
+        // @test Template()
+        Template::$values[$key] = '{' . $key . '}' . implode('', $val);
 	}
 
-	$z = $y2^$z2;
-	$footer = str_replace("{".($z)."}",$$z, $footer);
+    $z = $y2^$z2;
+    Template::$values['copyright'] = $$z;
 
+    // @note Don't think these are needed
 	//clean up spare {fields}s from header and footer (in case they're not used)
-	$footer = preg_replace("/{[^} \t\n\r]*}/i","",$footer);
-	$header = preg_replace("/{[^} \t\n\r]*}/i","",$header);
+	// $footer = preg_replace("/{[^} \t\n\r]*}/i","",$footer);
+	// $header = preg_replace("/{[^} \t\n\r]*}/i","",$header);
 
-	$output=$header.$output.$footer;
+    $raw_output = $header->render(Template::$values);
+    $raw_output.= $output;
+    $raw_output.= $footer->render(Template::$values);
+    $output = $raw_output;
 	saveuser();
 	session_write_close();
 	echo $output;
@@ -753,20 +783,18 @@ function charstats(){
  * @todo Template Help
  */
 function loadtemplate($templatename){
-	if ($templatename=="" || !file_exists("templates/$templatename") || substr($templatename, -4) != '.htm')
-		$templatename=getsetting("defaultskin", "jade.htm");
-	if ($templatename=="" || !file_exists("templates/$templatename"))
-		$templatename="jade.htm";
-	$fulltemplate = file_get_contents("templates/$templatename");
-	$fulltemplate = explode("<!--!",$fulltemplate);
-	foreach($fulltemplate as $key => $val){
-		$fieldname=substr($val,0,strpos($val,"-->"));
-		if ($fieldname!=""){
-			$template[$fieldname]=substr($val,strpos($val,"-->")+3);
-			modulehook("template-{$fieldname}",
-					array("content"=>$template[$fieldname]));
-		}
-	}
+    $partials = [
+        'adwrapper', 'footer', 'header', 'login', 'loginfull', 'navhead',
+        'navhelp', 'navitem', 'petitioncount', 'popupfoot', 'popuphead',
+        'statbuff', 'statend', 'stathead', 'statrow', 'statstart',
+    ];
+    foreach($partials as $partial)
+    {
+        $template[$partial] = Template::load('partials/' . $partial . '.html.twig');
+        modulehook('template-' . $partial, [
+            'content' => $template[$partial],
+        ]);
+    }
 	return $template;
 }
 

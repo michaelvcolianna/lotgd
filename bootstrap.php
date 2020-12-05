@@ -31,16 +31,6 @@ catch(\Exception $e)
     );
 }
 
-$twig_loader = new \Twig\Loader\FilesystemLoader(APP_PATH . '/app/views');
-$twig = new \Twig\Environment($twig_loader, [
-    'debug' => $_ENV['APP_DEBUG'] ?? false,
-    'cache' => APP_PATH . '/app/cache',
-]);
-if($_ENV['APP_DEBUG'] ?? false)
-{
-    $twig->addExtension(new \Twig\Extension\DebugExtension());
-}
-
 session_name('__lotgd_improved');
 session_start();
 
@@ -147,6 +137,54 @@ class DB
     public function getError()
     {
         return $this->error ?? false;
+    }
+}
+
+class Template
+{
+    public static $parser;
+    public static $values;
+
+    private static function createParser()
+    {
+        $twig_loader = new \Twig\Loader\FilesystemLoader(APP_PATH . '/app/views');
+        $twig = new \Twig\Environment($twig_loader, [
+            'debug' => $_ENV['APP_DEBUG'] ?? false,
+            'cache' => APP_PATH . '/app/cache',
+        ]);
+        if($_ENV['APP_DEBUG'] ?? false)
+        {
+            $twig->addExtension(new \Twig\Extension\DebugExtension());
+        }
+
+        self::$parser = $twig;
+    }
+
+    private static function init()
+    {
+        if(!self::$parser)
+        {
+            self::createParser();
+        }
+
+        if(!is_array(self::$values))
+        {
+            self::$values = [];
+        }
+    }
+
+    public static function load($file)
+    {
+        self::init();
+
+        return self::$parser->load($file);
+    }
+
+    public static function render($file, $values = [])
+    {
+        self::init();
+
+        return self::$parser->render($file, $values);
     }
 }
 
