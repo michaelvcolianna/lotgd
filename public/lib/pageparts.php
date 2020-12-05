@@ -346,18 +346,17 @@ HTML;
         $ued = translate_inline("`0`bUser Editor`b");
         db_free_result($result);
         if ($session['user']['superuser'] & SU_EDIT_USERS){
-            $p = "<a href='user.php'>$ued</a>|<a href='viewpetition.php'>$pet</a>";
+            $p = "<li class='user-editor-link'><a href='user.php'>$ued</a></li><li class='view-petition-link'><a href='viewpetition.php'>$pet</a></li>";
             addnav("", "user.php");
             addnav("", "viewpetition.php");
         } else {
-            $p = "<a href='viewpetition.php'>$pet</a>";
+            $p = "<li class='view-petition-link'><a href='viewpetition.php'>$pet</a></li>";
             addnav("", "viewpetition.php");
         }
-        $p .= " `\${$petitions[5]}`0|`^{$petitions[4]}`0|`b{$petitions[0]}`b|{$petitions[1]}|`!{$petitions[3]}`0|`#{$petitions[7]}`0|`%{$petitions[6]}`0|`i{$petitions[2]}`i";
-        // @todo Template()
-        // $pcount = templatereplace("petitioncount", array("petitioncount"=>appoencode($p, true)));
-        // $footer = str_replace("{petitiondisplay}", $pcount, $footer);
-        // $header = str_replace("{petitiondisplay}", $pcount, $header);
+        $p .= "<li class='petition-count-links'>`\${$petitions[5]}`0|`^{$petitions[4]}`0|`b{$petitions[0]}`b|{$petitions[1]}|`!{$petitions[3]}`0|`#{$petitions[7]}`0|`%{$petitions[6]}`0|`i{$petitions[2]}`i</li>";
+        Template::$values['petitiondisplay'] = $template['petitioncount']->render([
+            'petitioncount' => appoencode($p, true)
+        ]);
     } else {
         Template::$values['petitiondisplay'] = null;
     }
@@ -366,11 +365,14 @@ HTML;
     Template::$values['stats'] = $charstats;
 
     //output view PHP source link
-    $sourcelink = "source.php?url=".preg_replace("/[?].*/","",($_SERVER['REQUEST_URI']));
-    $source_js = popup($sourcelink) . ';return false;';
     $source_tl = translate_inline('View PHP Source');
     $source = <<<HTML
-<a href="{$sourcelink}" onclick="{$source_js}" target="_blank">{$source_tl}</a>
+<a
+    href="https://github.com/michaelvcolianna/lotgd/tree/feature/improvements"
+    target="_blank" rel="nofollow"
+>
+    {$source_tl}
+</a>
 HTML;
     Template::$values['source'] = $source;
 
