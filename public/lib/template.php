@@ -8,7 +8,7 @@ function templatereplace($itemname,$vals=false){
     if (!isset($template[$itemname]))
         output("`bWarning:`b The `i%s`i template part was not found!`n", $itemname);
     $out = $template[$itemname];
-    if (!is_array($vals)) return $out->render();
+    if (!is_array($vals)) return $out->render([$vals => $vals]);
 
     return $out->render($vals);
 }

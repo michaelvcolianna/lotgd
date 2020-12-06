@@ -36,40 +36,21 @@ session_start();
 
 class DB
 {
-    private static $instances = [];
-    private $connection = null;
-    private $query = null;
-    private $error = false;
+    private static $connection;
+    private static $query;
+    private static $result;
+    private static $error;
 
-    public static function getInstance()
-    {
-        $class = static::class;
-
-        if(!isset(self::$instances[$class]))
-        {
-            self::$instances[$class] = new static();
-        }
-
-        return self::$instances[$class];
-    }
-
-    private function __clone() {}
-    public function __wakeup()
-    {
-        throw new \Exception('Cannot unserialize a singleton.');
-    }
-
-    public function __construct()
+    private static function createConnection()
     {
         try
         {
-            $this->connection = new PDO(
+            self::$connection = new PDO(
                 $_ENV['DB_DSN'],
                 $_ENV['DB_USER'],
                 $_ENV['DB_PASS'],
                 [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
                 ]
             );
         }
@@ -90,53 +71,71 @@ class DB
         }
     }
 
-    public function doQuery($statement, $values = null)
+    private static function init()
     {
-        $this->query = $this->connection->prepare($statement);
+        if(!self::$connection)
+        {
+            self::createConnection();
+        }
+    }
+
+    private static function clear()
+    {
+        self::$query = null;
+        self::$error = null;
+
+        return;
+    }
+
+    public static function doQuery($statement, $values = null)
+    {
+        self::init();
+        self::clear();
+
+        self::$query = self::$connection->prepare($statement);
 
         try
         {
-            $this->query->execute($values);
+            self::$query->execute($values);
         }
         catch(\Exception $e)
         {
-            $this->error = $e;
+            self::$error = $e;
         }
 
-        return $this;
+        return __CLASS__;
     }
 
-    public function clear()
+    public static function getNext($method = null)
     {
-        $this->query = null;
-        $this->error = null;
-
-        return $this;
+        return self::$query->fetch($method ?? PDO::FETCH_OBJ);
     }
 
-    public function getNext($method = null)
+    public static function getAll($method = null)
     {
-        return $this->query->fetch($method ?? PDO::FETCH_OBJ);
+        return self::$query->fetchAll($method ?? PDO::FETCH_OBJ);
     }
 
-    public function getAll($method = null)
+    public static function getCount()
     {
-        return $this->query->fetchAll($method ?? PDO::FETCH_OBJ);
+        return self::$query->fetchColumn();
     }
 
-    public function getCount()
+    public static function getNumberOfRows()
     {
-        return $this->query->fetchColumn();
+        return self::$query->rowCount();
     }
 
-    public function getRows()
+    public static function getError()
     {
-        return $this->query->rowCount();
+        return self::$error ?? false;
     }
 
-    public function getError()
+    public static function end()
     {
-        return $this->error ?? false;
+        self::clear();
+
+        return;
     }
 }
 
@@ -229,12 +228,9 @@ function session($key, $value = null)
     return null;
 }
 
-$db = DB::getInstance();
-
 // Check if the SQL file was imported
-$tables = $db->doQuery('show tables')->getRows();
-$db->clear();
-if($tables == 0)
+DB::doQuery('show tables');
+if(DB::getNumberOfRows() == 0)
 {
     error_page(
         $_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error',
@@ -246,9 +242,8 @@ if($tables == 0)
 // Check if there's a superuser already, if not in the installer/error page
 if($script != 'new_installer' && $script != 'error')
 {
-    $superuser = $db->doQuery("select count(*) from `accounts` where `superuser` & 1")->getCount();
-    $db->clear();
-    if($superuser == 0)
+    DB::doQuery("select count(*) from `accounts` where `superuser` & 1");
+    if(DB::getNumberOfRows() == 0)
     {
         include WEB_PATH . '/new_installer.php';
         exit();
@@ -261,4 +256,4 @@ else
 }
 
 // If the script makes it here, all prechecks are done
-$db = null;
+DB::end();
