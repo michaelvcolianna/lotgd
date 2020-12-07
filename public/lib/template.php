@@ -38,5 +38,6 @@ function prepare_template($force=false){
     }
     $$z = $lc . $$z . "<br />";
 
+    $template['lotgd'] = Template::load('lotgd.html.twig');
 }
 ?>

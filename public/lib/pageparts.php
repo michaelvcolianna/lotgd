@@ -393,10 +393,8 @@ HTML;
     // $header = preg_replace("/{[^} \t\n\r]*}/i","",$header);
 
     //finalize output
-    $raw_output = $header->render(Template::$values);
-    $raw_output.= $output;
-    $raw_output.= $footer->render(Template::$values);
-    $output = $raw_output;
+    Template::$values['output'] = $output;
+
     $session['user']['gensize']+=strlen($output);
     $session['output']=$output;
     if ($saveuser === true) {
@@ -405,7 +403,8 @@ HTML;
     unset($session['output']);
     //this somehow allows some frames to load before the user's navs say it can
     //session_write_close();
-    echo $output;
+    echo $template['lotgd']->render(Template::$values);
+
     exit();
 }
 
@@ -470,13 +469,10 @@ function popup_footer(){
     // $footer = preg_replace("/{[^} \t\n\r]*}/i","",$footer);
     // $header = preg_replace("/{[^} \t\n\r]*}/i","",$header);
 
-    $raw_output = $header->render(Template::$values);
-    $raw_output.= $output;
-    $raw_output.= $footer->render(Template::$values);
-    $output = $raw_output;
+    Template::$values['output'] = $output;
     saveuser();
     session_write_close();
-    echo $output;
+    echo $template['lotgd']->render(Template::$values);
     exit();
 }
 

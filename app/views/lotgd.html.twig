@@ -1,1 +1,128 @@
-{# nothing yet #}
+<!DOCTYPE html>
+<html lang="en"> {# @todo Locale/language stuff #}
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>{{ title|raw }}</title>
+        {# @todo <link href="/css/lotgd.css" rel="stylesheet"> #}
+        {{ headscript|raw }}{{ script|raw }}
+    </head>
+
+    <body>
+        <header>
+            <div class="branding">
+                {{ title|raw }}
+            </div>
+
+            <div hidden>
+                {{ headerad|raw }}
+            </div>
+
+            <nav aria-label="General">
+                <ul>
+                    <li class="nav-motd">
+                        {{ motd|raw }}
+                    </li>
+
+                    {% if mail %}
+                        <li class="nav-mail">
+                            {{ mail|raw }}
+                        </li>
+                    {% endif %}
+
+                    <li class="nav-petition">
+                        {% if petition %}
+                            <div class="petition-link">
+                                {{ petition|raw }}
+                            </div>
+                        {% endif %}
+
+                        {% if petitiondisplay %}
+                            <div class="petition-display">
+                                {{ petitiondisplay|raw }}
+                            </div>
+                        {% endif %}
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <nav aria-label="Main">
+                {% if navad %}
+                    <div hidden>
+                        {{ navad|raw }}
+                    </div>
+                {% endif %}
+
+                <div class="main-nav-container">
+                    <ul>
+                        {{ nav|raw }}
+                    </ul>
+                </div>
+
+                {% if verticalad %}
+                    <div hidden>
+                        {{ verticalad|raw }}
+                    </div>
+                {% endif %}
+            </nav>
+
+            <section>
+                {% if bodyad %}
+                    <div hidden>
+                        {{ bodyad|raw }}
+                    </div>
+                {% endif %}
+
+                {{ output|raw }}
+
+                {% if tlbutton_pop %}
+                    <div class="tlbutton">
+                        {{ tlbutton_pop|raw }}
+                    </div>
+                {% endif %}
+            </section>
+
+            <aside>
+                {% if stats %}
+                    <div class="stats">
+                        {{ stats|raw }}
+                    </div>
+                {% endif %}
+
+                {% if paypal %}
+                    <div class="paypal">
+                        {{ paypal|raw }}
+                    </div>
+                {% endif %}
+            </aside>
+        </main>
+
+        <footer>
+            <p class="copyright">
+                {{ copyright|raw }}
+                Design: Jade Template © Josh Canning 2004 of
+                <a href="http://hfs.cjb.net/" target="_blank" rel="nofollow">
+                    HFS
+                </a>
+            </p>
+
+            <aside>
+                <ul>
+                    <li class="lotgd-source">
+                        {{ source|raw }}
+                    </li>
+
+                    <li class="lotgd-version">
+                        {{ version|raw }}
+                    </li>
+
+                    <li class="lotgd-pagegen">
+                        {{ pagegen|raw }}
+                    </li>
+                </ul>
+            </aside>
+        </footer>
+    </body>
+</html>

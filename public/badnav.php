@@ -9,6 +9,7 @@ require_once("lib/villagenav.php");
 tlschema("badnav");
 
 if ($session['user']['loggedin'] && $session['loggedin']){
+    page_header("Your Navs Are Corrupted");
     if (strpos($session['output'],"<!--CheckNewDay()-->")){
         checkday();
     }
@@ -27,18 +28,18 @@ if ($session['user']['loggedin'] && $session['loggedin']){
     if (!is_array($session['allowednavs']) ||
             count($session['allowednavs'])==0 || $row['output']=="") {
         $session['allowednavs']=array();
-        page_header("Your Navs Are Corrupted");
-        if ($session['user']['alive']) {
-            villagenav();
-            output("Your navs are corrupted, please return to %s.",
-                    $session['user']['location']);
-        } else {
-            addnav("Return to Shades", "shades.php");
-            output("Your navs are corrupted, please return to the Shades.");
-        }
-        page_footer();
     }
-    echo $row['output'];
+    if ($session['user']['alive']) {
+        villagenav();
+        output("Your navs are corrupted, please return to %s.",
+                $session['user']['location']);
+    } else {
+        addnav("Return to Shades", "shades.php");
+        output("Your navs are corrupted, please return to the Shades.");
+    }
+    page_footer();
+    Template::$values['output'] = $row['output'];
+    echo $template['lotgd']->render(Template::$values);
     $session['debug']="";
     $session['user']['allowednavs']=$session['allowednavs'];
     saveuser();
